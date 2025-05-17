@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPY Options TP/SL Calculator</title>
+</head>
+<body style="font-family: Arial, sans-serif; padding: 20px; max-width: 400px; margin: auto;">
+  <h2>SPY Option TP/SL Calculator</h2>
+  <label>Entry Price ($): <input type="number" id="entry" step="0.01" /></label><br><br>
+  <label>Target Profit ($): <input type="number" id="profit" step="1" /></label><br><br>
+  <label>Max Loss ($): <input type="number" id="loss" step="1" /></label><br><br>
+  <label>Contracts: <input type="number" id="contracts" step="1" min="1" value="1" /></label><br><br>
+  <button onclick="calculate()">Calculate TP & SL</button>
+  <div id="result" style="margin-top: 20px; font-weight: bold;"></div>
+
+  <script>
+    function calculate() {
+      const entry = parseFloat(document.getElementById('entry').value);
+      const profit = parseFloat(document.getElementById('profit').value);
+      const loss = parseFloat(document.getElementById('loss').value);
+      const contracts = parseInt(document.getElementById('contracts').value);
+      
+      if (isNaN(entry) || isNaN(profit) || isNaN(loss) || isNaN(contracts) || contracts < 1) {
+        document.getElementById('result').innerText = "Please enter all values.";
+        return;
+      }
+
+      const tpPerContract = profit / (contracts * 100);
+      const slPerContract = loss / (contracts * 100);
+
+      const tpPrice = entry + tpPerContract;
+      const slPrice = entry - slPerContract;
+
+      document.getElementById('result').innerText =
+        `Set TP at $${tpPrice.toFixed(2)} and SL at $${slPrice.toFixed(2)} (for ${contracts} contract${contracts > 1 ? 's' : ''})`;
+    }
+  </script>
+</body>
+</html>
